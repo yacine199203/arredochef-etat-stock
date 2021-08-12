@@ -69,7 +69,7 @@ class AccountController extends AbstractController
             $manager=$this->getDoctrine()->getConnection();
             $sql = '
             SELECT * FROM user u
-            WHERE u.pseudo LIKE \'%'.$name.'%\''.' ORDER BY d.id DESC';
+            WHERE u.pseudo LIKE \'%'.$name.'%\''.' ORDER BY u.id DESC';
             $result=$manager->prepare($sql);
             $users=$result->executeQuery();
 
