@@ -1,0 +1,61 @@
+{% extends "/base.html.twig" %} 
+{% block title %}Paramètres{% endblock %} 
+{% block body %}
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <h1 class="my-5">{{'Paramètres'|upper}}</h1>
+    </div>
+
+    <div class="row mx-lg-0">
+        <div class="col-md-2 p-2 bg-light rounded border">
+            <table class="mx-2">
+                <tr>
+                    <td>
+                        <center><i class="fas fa-user"></i></center>
+                    </td>
+                    <td>
+                        <a href="#" class="nav-link mvp px-1">
+                            Utilisateurs
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <center><i class="fas fa-store"></i></center>
+                    </td>
+                    <td>
+                        <a href="{{path('depot')}}" class="nav-link mvp px-1">
+                            Dépôts
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <center><i class="fas fa-list"></i></center>
+                    </td>
+                    <td>
+                        <a href="#" class="nav-link mvp px-1">
+                            Catégories
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <center><i class="fas fa-shopping-cart"></i></center>
+                    </td>
+                    <td>
+                        <a href="#" class="nav-link mvp px-1">
+                            Produits
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-md-10">
+            {% block mbody %}
+            {% endblock %}
+        </div>
+    </div>
+
+</div>
+{% endblock %}
