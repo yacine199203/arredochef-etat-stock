@@ -16,9 +16,16 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#">Inventaire <span class="sr-only">(current)</span></a>
                     </li>
+                    {% if is_granted('ROLE_ADMIN') %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{path('parametres')}}">Paramètres <span class="sr-only">(current)</span></a>
                     </li>
+                    {% endif %}
+                    {% if app.user %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{path('logout')}}">Déconnexion <span class="sr-only">(current)</span></a>
+                    </li>
+                    {% endif %}
                 </ul>
             </div>
         </nav>

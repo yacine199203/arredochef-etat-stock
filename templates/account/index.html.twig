@@ -35,6 +35,7 @@
         </div>
 
         <div class="col-2 align-self-center">
+        {% if user.pseudo != 'ADMIN' %}
             <a href="{{ path('removeUser',{'slug': user.slug}) }}"
                 onclick="return confirm ('voulez vous vraiment supprimer {{user.pseudo}} ?')">
                 <button class="btn pr-0 btnmdsup delete"><i class="far fa-trash-alt"></i></button>
@@ -42,6 +43,7 @@
             <a href="{{ path('editUser',{'slug': user.slug}) }}">
                 <button class="btn pr-0 btnmdsup"><i class="fas fa-edit"></i></button>
             </a>
+        {% endif %}
             <a href="{{ path('updatePass',{'slug': user.slug}) }}">
                 <button class="btn pr-0 btnmdsup"><i class="fas fa-lock"></i></button>
             </a>
