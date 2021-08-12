@@ -9,12 +9,14 @@ use App\Repository\DepotRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class DepotController extends AbstractController
 {
     /**
      * @Route("/depot", name="depot")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function index(DepotRepository $depotRepo,Request $request): Response
     {
@@ -41,6 +43,7 @@ class DepotController extends AbstractController
     /**
      * permet d'ajouter un dépôt
      * @Route("/ajouter-depot", name="addDepot")
+     * @IsGranted("ROLE_ADMIN")
      * @return Response
      */
     public function addDepot(Request $request)
@@ -63,6 +66,7 @@ class DepotController extends AbstractController
     /**
      * permet de modifier un dépôt
      * @Route("/modifier-depot/{slug}", name="editDepot")
+     * @IsGranted("ROLE_ADMIN")
      * @return Response
      */
     public function editDepot($slug,DepotRepository $depotRepo,Request $request)
@@ -85,6 +89,7 @@ class DepotController extends AbstractController
     /**
      * permet de supprimer une dépôt
      * @Route("/supprimer-depot/{slug} ", name="removeDepot")
+     * @IsGranted("ROLE_ADMIN")
      * @return Response
      */
     public function removeDepot($slug,DepotRepository $depotRepo)

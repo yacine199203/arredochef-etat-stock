@@ -1,0 +1,52 @@
+{% extends 'menu-vertical-parametres.html.twig' %}
+
+{% block title %}Utilisateur{% endblock %}
+
+{% block mbody %}
+    <div class="row mx-2">
+        <h2 class="my-3">Utilisateur</h2>
+    </div>
+    <div class="row justify-content-end mx-2 my-3">
+        <a href="{{path('addUser')}}">
+            <button class="btn btn-primary my-2" type="button">
+                Ajouter un utilisateur
+            </button>
+        </a>
+    </div>
+    <div class="col-12 py-3 px-2">
+        {{ form_start(formName) }}
+            <div class="d-lg-flex">
+                <div class="w-100">{{ form_widget(formName.word) }}</div>
+            </div>
+        {{ form_end(formName) }}
+    </div>
+    <div class="row mx-2 border-bottom border-dark">
+        <div class="col-10">
+            <h4>Pseudonyme</h4>
+        </div>
+        <div class="col-2">
+            <h4>#</h4>
+        </div>
+    </div>
+    {% for user in users %}
+    <div class="row mx-2 py-2 border-bottom">
+        <div class="col-10 align-self-center">
+            <span class="">{{user.pseudo}}</span>
+        </div>
+
+        <div class="col-2 align-self-center">
+            <a href="{{ path('removeUser',{'slug': user.slug}) }}"
+                onclick="return confirm ('voulez vous vraiment supprimer {{user.pseudo}} ?')">
+                <button class="btn pr-0 btnmdsup delete"><i class="far fa-trash-alt"></i></button>
+            </a>
+            <a href="{{ path('editUser',{'slug': user.slug}) }}">
+                <button class="btn pr-0 btnmdsup"><i class="fas fa-edit"></i></button>
+            </a>
+            <a href="{{ path('updatePass',{'slug': user.slug}) }}">
+                <button class="btn pr-0 btnmdsup"><i class="fas fa-lock"></i></button>
+            </a>
+            
+        </div>
+    </div>
+    {% endfor %}
+{% endblock %}
