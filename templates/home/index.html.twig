@@ -3,4 +3,29 @@
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
+    <div class="row m-2 justify-content-center">
+        <h2 class="my-3">{{"Dépôts"|upper}}</h2>
+    </div>
+    
+    <div class="container p-5 rounded border-dark border">
+        <div class="col-12 py-3 px-2">
+            {{ form_start(formName) }}
+                <div class="d-lg-flex">
+                    <div class="w-100">{{ form_widget(formName.word) }}</div>
+                </div>
+            {{ form_end(formName) }}
+        </div>
+        <div class="row mx-2 border-bottom border-dark">
+            <div class="col-12">
+                <h4>Libellé</h4>
+            </div>
+        </div>
+        {% for depot in depots %}
+        <div class="row mx-2 py-1 border-bottom">
+            <div class="col-12 align-self-center">
+                <a href="#" class="nav-link"><h6 class="m-0">{{depot.libelle}}</h6></a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 {% endblock %}

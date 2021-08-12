@@ -6,6 +6,7 @@ body {
 a {
     text-decoration: none !important;
     outline: none;
+    color: rgb(65, 65, 66);
 }
 
 .nav-item {
