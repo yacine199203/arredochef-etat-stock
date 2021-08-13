@@ -1,0 +1,75 @@
+<html>
+    <head>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/3.3.3/adapter.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.10/vue.min.js"></script>
+<script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+    integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+    crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link type="text/css" rel="stylesheet" href="/style.css">
+    </head>
+    <body style="background-color:black">
+        <div class="p-3 ">
+            <a class="w-100" href="{{path('entree')}}" style="text-decoration:none">
+                <div class="col-12  bg-primary text-white d-flex align-items-center justify-content-center" style="height: 120px">
+                    <h2>Quitter</h2>
+                </div>  
+            </a> 
+        </div>
+        <div class=" scan" style="margin: 100px 10px">
+            <video id="preview" width="100%"></video>
+        </div>
+
+        <script>
+        function GoBackWithRefresh(event) {
+            if ('referrer' in document) {
+                window.location = document.referrer;
+                /* OR */
+                //location.replace(document.referrer);
+            } else {
+                window.history.back();
+            }
+        }
+           function bip() {
+               var bip= new Audio();
+                   bip.src="/song/bip.wav";
+                   bip.play();
+           }
+           navigator.mediaDevices.getUserMedia({video: true}) 
+           let scanner = new Instascan.Scanner({ video: document.getElementById('preview'), mirror: false,});
+           Instascan.Camera.getCameras().then(function(cameras){
+               if(cameras.length > 0 ){
+                   scanner.start(cameras[cameras.length - 1]);
+               } else{
+                   alert('No cameras found');
+               }
+
+           }).catch(function(e) {
+               console.error(e);
+           });
+
+           scanner.addListener('scan',function(c){
+               
+               var urlcourante = document.location.href;
+               $.getJSON(urlcourante+c, function (response){
+                   let result= false;
+                   if(response.data == true){
+                       bip();
+                       console.log(response.data)
+                       result= true;
+                   }
+                   else if(result == false)
+                   {
+                       console.log("erreur")
+                   }
+                   
+               })
+
+               
+           });
+        
+        </script>
+    </body>
+</html>

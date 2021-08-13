@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}MouvementStock{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row py-5 justify-content-center">
+        <a class="w-100 mx-5" href="{{path('entree')}}">
+            <div class="col-12 my-3 bg-success text-white d-flex align-items-center justify-content-center" style="height: 200px">
+                <h2>Entrée</h2>
+            </div>  
+        </a> 
+        <a class="w-100 mx-5" href="{{path('sortie')}}">
+            <div class="col-12 my-3 bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 200px">
+                <h2>Sortie</h2>
+            </div>
+        </a>
+    </div>
+</div>
+
+{% endblock %}
