@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Cocur\Slugify\Slugify;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\DepotRepository;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -35,6 +37,17 @@ class Depot
      * @ORM\Column(type="string", length=255)
      */
     private $slug;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Category::class, mappedBy="depot", orphanRemoval=true)
+     */
+    private $categories;
+
+    public function __construct()
+    {
+        $this->categories = new ArrayCollection();
+    }
+
 
     /** 
     *@ORM\PrePersist
@@ -76,4 +89,35 @@ class Depot
 
         return $this;
     }
+
+    /**
+     * @return Collection|Category[]
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+            $category->setDepot($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): self
+    {
+        if ($this->categories->removeElement($category)) {
+            // set the owning side to null (unless already changed)
+            if ($category->getDepot() === $this) {
+                $category->setDepot(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

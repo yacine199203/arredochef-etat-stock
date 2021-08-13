@@ -23,7 +23,7 @@
         {% for depot in depots %}
         <div class="row mx-2 py-1 border-bottom">
             <div class="col-12 align-self-center">
-                <a href="#" class="nav-link"><h6 class="m-0">{{depot.libelle}}</h6></a>
+                <a href="{{ path('stock',{'slug': depot.slug}) }}" class="nav-link"><h6 class="m-0">{{depot.libelle}}</h6></a>
             </div>
         </div>
         {% endfor %}

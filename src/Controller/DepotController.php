@@ -87,7 +87,7 @@ class DepotController extends AbstractController
     }
 
     /**
-     * permet de supprimer une dépôt
+     * permet de supprimer un dépôt
      * @Route("/supprimer-depot/{slug} ", name="removeDepot")
      * @IsGranted("ROLE_ADMIN")
      * @return Response
@@ -99,5 +99,20 @@ class DepotController extends AbstractController
         $manager->remove($removeDepot); 
         $manager->flush();
         return $this-> redirectToRoute('depot');
+    }
+
+    /**
+     * permet d'afficher les catégories d'un depot'
+     * @Route("/depot/{slug}", name="stock")
+     * @IsGranted("ROLE_ADMIN")
+     * @return Response
+     */
+    public function Depot($slug,DepotRepository $depotRepo,Request $request)
+    {
+        $categorysDepot = $depotRepo->findOneBySlug($slug);
+        
+        return $this->render('depot/stock.html.twig', [
+            'categorysDepot'=> $categorysDepot,
+        ]);
     }
 }

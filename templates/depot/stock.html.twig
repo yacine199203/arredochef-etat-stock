@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Etat de stock{% endblock %}
+
+{% block body %}
+    
+    <div class="container py-5">
+    {% for category in categorysDepot.categories %}
+        <div class="row border p-2 bg-info">
+            <h3 class="m-0 text-white">{{category.categoryname}}</h3>
+        </div>
+        <div class="row border border-dark border-bottom p-2">
+            <div class="col-md-1">
+                <h5 class="m-0">Réf</h5>
+            </div>
+            <div class="col-md-8">
+                <h5 class="m-md-0">Libellé</h5>
+            </div>
+            <div class="col-md-2">
+                <h5 class="m-md-0">Couleur</h5>
+            </div>
+            <div class="col-1">
+                <h5 class="m-0">Qté</h5>
+            </div>
+        </div>
+        <div class="row border border-dark border-bottom p-2 bg-warning text-white">
+            <div class="col-md-1">
+                <span>10129002</span>
+            </div>
+            <div class="col-md-8">
+                <span>Armoire réfrigérée négative 650L Inox Armoire réfrigérée négative 650L Inox</span>
+            </div>
+            <div class="col-md-2">
+                <span>Inox</span>
+            </div>
+            <div class="col-md-1">
+                <span>200</span>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+
+{% endblock %}
