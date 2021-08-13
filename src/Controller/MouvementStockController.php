@@ -25,7 +25,7 @@ class MouvementStockController extends AbstractController
     {
         
         return $this->render('mouvement_stock/scanner.html.twig', [
-            
+            'mouvement' => 'Entrée',
         ]);
     }
 
@@ -36,7 +36,7 @@ class MouvementStockController extends AbstractController
     {
         
         return $this->render('mouvement_stock/scanner.html.twig', [
-            
+            'mouvement' => 'sortie',
         ]);
     }
 }
