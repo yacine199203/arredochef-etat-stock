@@ -5,11 +5,27 @@
 {% block body %}
     
     <div class="container py-5">
-    {% for category in categorysDepot.categories %}
-        <div class="row border p-2 bg-info">
-            <h3 class="m-0 text-white">{{category.categoryname}}</h3>
-        </div>
-        <div class="row border border-dark border-bottom p-2">
+        <div class="row justify-content-end my-3">
+            <div class="col-2 py-3 px-2">
+                {{ form_start(form) }}
+                    <div class="d-lg-flex">
+                        <div class="w-100">{{ form_widget(form.word) }}</div>
+                    </div>
+                {{ form_end(form) }}
+            </div>
+            <div class="col-10 py-3 px-2">
+                {{ form_start(formName) }}
+                    <div class="d-lg-flex">
+                        <div class="w-100">{{ form_widget(formName.word) }}</div>
+                    </div>
+                {{ form_end(formName) }}
+            </div>
+        </div>    
+    {% set txtcouleur = "" %}
+    {% set bgcouleur = "" %}
+    
+    {% if produit is not null %}
+        <div class="row border border-dark border-bottom p-2 bg-secondary text-white">
             <div class="col-md-1">
                 <h5 class="m-0">Réf</h5>
             </div>
@@ -23,21 +39,82 @@
                 <h5 class="m-0">Qté</h5>
             </div>
         </div>
-        <div class="row border border-dark border-bottom p-2 bg-warning text-white">
+    {% for prod in produit %}
+
+        {% if prod.qte == 0 %}
+            {% set txtcouleur = "text-white" %}
+            {% set bgcouleur = "bg-danger" %}
+        {% elseif prod.qte <= prod.alert %}
+            {% set txtcouleur = "text-white" %}
+            {% set bgcouleur = "bg-warning" %}
+        {% else %}
+            {% set txtcouleur = "" %}
+            {% set bgcouleur = "" %}
+        {% endif %}
+        
+        <div class="row border border-dark border-bottom p-2 {{txtcouleur}} {{bgcouleur}}">
             <div class="col-md-1">
-                <span>10129002</span>
+                <span class="font-weight-bold">{{prod.ref}}</span>
             </div>
             <div class="col-md-8">
-                <span>Armoire réfrigérée négative 650L Inox Armoire réfrigérée négative 650L Inox</span>
+                <span class="font-weight-bold">{{prod.libelle}}</span>
             </div>
             <div class="col-md-2">
-                <span>Inox</span>
+                <span class="font-weight-bold">{{prod.color}}</span>
             </div>
             <div class="col-md-1">
-                <span>200</span>
+                <span class="font-weight-bold">{{prod.qte}}</span>
             </div>
         </div>
     {% endfor %}
-    </div>
+    {% else %}    
+    {% for category in categorysDepot.categories %}
+        <div class="row border p-2 bg-info">
+            <h3 class="m-0 text-white">{{category.categoryname}}</h3>
+        </div>
+        <div class="row border border-dark border-bottom p-2 bg-secondary text-white">
+            <div class="col-md-1">
+                <h5 class="m-0">Réf</h5>
+            </div>
+            <div class="col-md-8">
+                <h5 class="m-md-0">Libellé</h5>
+            </div>
+            <div class="col-md-2">
+                <h5 class="m-md-0">Couleur</h5>
+            </div>
+            <div class="col-1">
+                <h5 class="m-0">Qté</h5>
+            </div>
+        </div>
+        {% for product in category.products %}
+        {% if product.qte == 0 %}
+            {% set txtcouleur = "text-white" %}
+            {% set bgcouleur = "bg-danger" %}
+        {% elseif product.qte <= product.alert %}
+            {% set txtcouleur = "text-white" %}
+            {% set bgcouleur = "bg-warning" %}
+        {% else %}
+            {% set txtcouleur = "" %}
+            {% set bgcouleur = "" %}
+        {% endif %}
+        
+        <div class="row border border-dark border-bottom p-2 {{txtcouleur}} {{bgcouleur}}">
+            <div class="col-md-1">
+                <span class="font-weight-bold">{{product.ref}}</span>
+            </div>
+            <div class="col-md-8">
+                <span class="font-weight-bold">{{product.libelle}}</span>
+            </div>
+            <div class="col-md-2">
+                <span class="font-weight-bold">{{product.color}}</span>
+            </div>
+            <div class="col-md-1">
+                <span class="font-weight-bold">{{product.qte}}</span>
+            </div>
+        </div>
+        {% endfor %}
 
+    {% endfor %}
+    </div>
+{% endif %}
 {% endblock %}

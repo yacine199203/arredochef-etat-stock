@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Depot;
 use App\Form\DepotType;
+use App\Form\RefSearchType;
 use App\Form\NameSearchType;
 use App\Repository\DepotRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -89,7 +90,7 @@ class DepotController extends AbstractController
     /**
      * permet de supprimer un dépôt
      * @Route("/supprimer-depot/{slug} ", name="removeDepot")
-     * @IsGranted("ROLE_ADMIN")
+     * @IsGranted("ROLE_USER")
      * @return Response
      */
     public function removeDepot($slug,DepotRepository $depotRepo)
@@ -104,15 +105,46 @@ class DepotController extends AbstractController
     /**
      * permet d'afficher les catégories d'un depot'
      * @Route("/depot/{slug}", name="stock")
-     * @IsGranted("ROLE_ADMIN")
+     * @IsGranted("ROLE_USER")
      * @return Response
      */
     public function Depot($slug,DepotRepository $depotRepo,Request $request)
     {
         $categorysDepot = $depotRepo->findOneBySlug($slug);
+        $produit=null;
+        $formName = $this->createForm(NameSearchType::class);
+        $formName-> handleRequest($request);
+        $form = $this->createForm(RefSearchType::class);
+        $form-> handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $name = $form->get('word')->getData();
+            $manager=$this->getDoctrine()->getConnection();
+            $sql = '
+            SELECT * FROM product p, category c
+            WHERE p.category_id = c.id AND p.ref LIKE \'%'.$name.'%\''.' ORDER BY p.id DESC';
+            $result=$manager->prepare($sql);
+            $produit=$result->executeQuery();
+        }
+        if($formName->isSubmitted() && $formName->isValid())
+        {
+            $name = $formName->get('word')->getData();
+            $manager=$this->getDoctrine()->getConnection();
+            $sql = '
+            SELECT * FROM product p, category c
+            WHERE p.category_id = c.id AND p.libelle LIKE \'%'.$name.'%\''.' ORDER BY p.id DESC';
+            $result=$manager->prepare($sql);
+            $produit=$result->executeQuery();
+
+        }
         
         return $this->render('depot/stock.html.twig', [
             'categorysDepot'=> $categorysDepot,
+            'produit'=> $produit,
+            'formName'=> $formName->createView(),
+            'form'=> $form->createView(),
         ]);
     }
+    
 }

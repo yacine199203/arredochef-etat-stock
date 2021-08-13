@@ -1,0 +1,72 @@
+{% extends 'menu-vertical-parametres.html.twig' %}
+
+{% block title %}Produits{% endblock %}
+
+{% block mbody %}
+    <div class="row mx-2">
+        <h2 class="my-3">Produits</h2>
+    </div>
+    {% if categorys == 0 %}
+    
+        <div class="row justify-content-center">
+            <h2 class="my-3">Vous devez ajouter au moins une catégorie</h2>
+        </div>
+
+    {% else %}
+        <div class="row justify-content-end mx-2 my-3">
+            <a href="{{path('addProduct')}}">
+                <button class="btn btn-primary my-2" type="button">
+                    Ajouter une produit
+                </button>
+            </a>
+        </div>
+        <div class="row justify-content-end mx-2 my-3">
+            <div class="col-2 py-3 px-2">
+                {{ form_start(form) }}
+                    <div class="d-lg-flex">
+                        <div class="w-100">{{ form_widget(form.word) }}</div>
+                    </div>
+                {{ form_end(form) }}
+            </div>
+            <div class="col-10 py-3 px-2">
+                {{ form_start(formName) }}
+                    <div class="d-lg-flex">
+                        <div class="w-100">{{ form_widget(formName.word) }}</div>
+                    </div>
+                {{ form_end(formName) }}
+            </div>
+        </div>    
+    
+    <div class="row mx-2 border-bottom border-dark">
+        <div class="col-2">
+            <h4>Réf</h4>
+        </div>
+        <div class="col-8">
+            <h4>Produit</h4>
+        </div>
+        <div class="col-2">
+            <h4>#</h4>
+        </div>
+    </div>
+    {% for product in products %}
+    <div class="row mx-2 py-2 border-bottom">
+        <div class="col-2 align-self-center">
+            <span class="">{{product.ref}}</span>
+        </div>
+        <div class="col-8 align-self-center">
+            <span class="">{{product.libelle}}</span>
+        </div>
+
+        <div class="col-2 align-self-center">
+            <a href="{{ path('editProduct',{'slug': product.slug}) }}">
+                <button class="btn pr-0 btnmdsup"><i class="fas fa-edit"></i></button>
+            </a>
+            <a href="{{ path('removeProduct',{'id': product.id}) }}"
+                onclick="return confirm ('voulez vous vraiment supprimer la catégorie {{product.libelle}} ? \ntous les produits inclus dans ce dépôt seront aussi supprimé')">
+                <button class="btn pr-0 btnmdsup delete"><i class="far fa-trash-alt"></i></button>
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+{% endblock %}
