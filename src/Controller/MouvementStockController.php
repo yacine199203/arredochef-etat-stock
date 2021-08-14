@@ -2,9 +2,10 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class MouvementStockController extends AbstractController
 {
@@ -36,7 +37,37 @@ class MouvementStockController extends AbstractController
     {
         
         return $this->render('mouvement_stock/scanner.html.twig', [
-            'mouvement' => 'sortie',
+            'mouvement' => 'Sortie',
         ]);
+    }
+
+    /**
+     * @Route("/mouvement-stock/entree/{ref}/{qte}", name="addQte")
+     */
+    public function addQte($ref,$qte,ProductRepository $productRepo): Response
+    {
+        $addQte= $productRepo->findOneByRef($ref);
+        $newQte=$addQte->getQte()+$qte;
+        $addQte->setQte($newQte);
+        $manager=$this->getDoctrine()->getManager();
+        $manager->persist($addQte); 
+        $manager->flush();
+        
+        return $this->json(['code'=> 200, 'message'=>'ok','data'=>true],200);
+    }
+
+    /**
+     * @Route("/mouvement-stock/sortie/{ref}/{qte}", name="subQte")
+     */
+    public function subtractQte($ref,$qte,ProductRepository $productRepo): Response
+    {
+        $addQte= $productRepo->findOneByRef($ref);
+        $newQte=$addQte->getQte()-$qte;
+        $addQte->setQte($newQte);
+        $manager=$this->getDoctrine()->getManager();
+        $manager->persist($addQte); 
+        $manager->flush();
+        
+        return $this->json(['code'=> 200, 'message'=>'ok','data'=>true],200);
     }
 }
