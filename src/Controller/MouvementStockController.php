@@ -5,12 +5,14 @@ namespace App\Controller;
 use App\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class MouvementStockController extends AbstractController
 {
     /**
      * @Route("/mouvement-stock", name="mouvement")
+     * @IsGranted("ROLE_MANAGER")
      */
     public function index(): Response
     {
@@ -21,6 +23,7 @@ class MouvementStockController extends AbstractController
 
     /**
      * @Route("/mouvement-stock/entree", name="entree")
+     * @IsGranted("ROLE_MANAGER")
      */
     public function entree(): Response
     {
@@ -32,6 +35,7 @@ class MouvementStockController extends AbstractController
 
     /**
      * @Route("/mouvement-stock/sortie", name="sortie")
+     * @IsGranted("ROLE_MANAGER")
      */
     public function sortie(): Response
     {
@@ -43,6 +47,7 @@ class MouvementStockController extends AbstractController
 
     /**
      * @Route("/mouvement-stock/entree/{ref}/{qte}", name="addQte")
+     * @IsGranted("ROLE_MANAGER")
      */
     public function addQte($ref,$qte,ProductRepository $productRepo): Response
     {
@@ -58,6 +63,7 @@ class MouvementStockController extends AbstractController
 
     /**
      * @Route("/mouvement-stock/sortie/{ref}/{qte}", name="subQte")
+     * @IsGranted("ROLE_MANAGER")
      */
     public function subtractQte($ref,$qte,ProductRepository $productRepo): Response
     {

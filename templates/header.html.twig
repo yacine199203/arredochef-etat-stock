@@ -10,9 +10,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{path('home')}}">Dépôts <span class="sr-only">(current)</span></a>
                     </li>
+                    {% if is_granted('ROLE_MANAGER') %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{path('mouvement')}}">E/S <span class="sr-only">(current)</span></a>
                     </li>
+                    {% endif %}
                     <li class="nav-item">
                         <a class="nav-link" href="#">Inventaire <span class="sr-only">(current)</span></a>
                     </li>
