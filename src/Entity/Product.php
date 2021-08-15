@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Cocur\Slugify\Slugify;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ProductRepository;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -67,6 +69,16 @@ class Product
      * @ORM\Column(type="string", length=255)
      */
     private $slug;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=InventaireList::class, mappedBy="product")
+     */
+    private $inventaireLists;
+
+    public function __construct()
+    {
+        $this->inventaireLists = new ArrayCollection();
+    }
 
     /** 
     *@ORM\PrePersist
@@ -165,6 +177,33 @@ class Product
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|InventaireList[]
+     */
+    public function getInventaireLists(): Collection
+    {
+        return $this->inventaireLists;
+    }
+
+    public function addInventaireList(InventaireList $inventaireList): self
+    {
+        if (!$this->inventaireLists->contains($inventaireList)) {
+            $this->inventaireLists[] = $inventaireList;
+            $inventaireList->addProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInventaireList(InventaireList $inventaireList): self
+    {
+        if ($this->inventaireLists->removeElement($inventaireList)) {
+            $inventaireList->removeProduct($this);
+        }
 
         return $this;
     }

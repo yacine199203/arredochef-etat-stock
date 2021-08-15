@@ -1,0 +1,53 @@
+{% extends '/base.html.twig' %}
+
+{% block title %}Inventaire{% endblock %}
+
+{% block body %}
+    <div class="row mx-2">
+        <h2 class="my-3">Inventaire</h2>
+    </div>
+    {% if is_granted('ROLE_MANAGER') %}
+    <div class="row justify-content-end mx-2 my-3">
+        <a href="{{path('addInventaire')}}">
+            <button class="btn btn-primary my-2" type="button">
+                Ajouter un Inventaire
+            </button>
+        </a>
+    </div>
+    {% endif %}
+    <div class="col-12 py-3 px-2">
+        {{ form_start(formName) }}
+            <div class="d-lg-flex">
+                <div class="w-100">{{ form_widget(formName.word) }}</div>
+            </div>
+        {{ form_end(formName) }}
+    </div>
+    <div class="row mx-2 border-bottom border-dark">
+        <div class="col-10">
+            <h4>Libellé</h4>
+        </div>
+        <div class="col-2">
+            <h4>#</h4>
+        </div>
+    </div>
+    {% for inventaire in inventaires %}
+    <div class="row mx-2 py-2 border-bottom">
+        <div class="col-10 align-self-center">
+        <a href="#">
+            <span class="">{{inventaire.libelle}}</span>
+        </a>
+        </div>
+    {% if is_granted('ROLE_MANAGER') %}
+        <div class="col-2 align-self-center">
+            <a href="{{ path('editInventaire',{'id': inventaire.id}) }}">
+                <button class="btn pr-0 btnmdsup"><i class="fas fa-edit"></i></button>
+            </a>
+            <a href="{{ path('removeInventaire',{'id': inventaire.id}) }}"
+                onclick="return confirm ('voulez vous vraiment supprimer le dépôt {{inventaire.libelle}} ? \ntous les produits inclus dans ce dépôt seront aussi supprimé')">
+                <button class="btn pr-0 btnmdsup delete"><i class="far fa-trash-alt"></i></button>
+            </a>
+        </div>
+    {% endif %}
+    </div>
+    {% endfor %}
+{% endblock %}

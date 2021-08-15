@@ -41,10 +41,10 @@
         </div>
     {% for prod in produit %}
 
-        {% if prod.qte <= 0 %}
+        {% if prod.qte == 0 %}
             {% set txtcouleur = "text-white" %}
             {% set bgcouleur = "bg-danger" %}
-        {% elseif prod.qte > 0 and prod.qte <= prod.alert %}
+        {% elseif prod.qte <= prod.alert %}
             {% set txtcouleur = "text-white" %}
             {% set bgcouleur = "bg-warning" %}
         {% else %}

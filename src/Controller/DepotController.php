@@ -66,7 +66,7 @@ class DepotController extends AbstractController
 
     /**
      * permet de modifier un dépôt
-     * @Route("/modifier-depot/{slug}", name="editDepot")
+     * @Route("/modifier-depot/{slug}", name="editInventaire")
      * @IsGranted("ROLE_ADMIN")
      * @return Response
      */
@@ -89,7 +89,7 @@ class DepotController extends AbstractController
 
     /**
      * permet de supprimer un dépôt
-     * @Route("/supprimer-depot/{slug} ", name="removeDepot")
+     * @Route("/supprimer-depot/{slug} ", name="removeInventaire")
      * @IsGranted("ROLE_USER")
      * @return Response
      */
