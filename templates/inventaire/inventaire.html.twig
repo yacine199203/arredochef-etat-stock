@@ -1,0 +1,103 @@
+{% extends '/base.html.twig' %}
+
+{% block title %} {{ inventaire.libelle|upper }} {% endblock %}
+
+{% block body %}
+    <div class = "container-fluid"> 
+        
+        <div class="row my-5 mx-1 justify-content-lg-between">
+
+            <a href="{{ path('inventaire') }}">
+                <button class="btn btn-primary my-2 float-right mr-2" type="button">
+                Inventaire
+                </button>
+            </a>
+            <a href="{{ path('scan',{'id': inventaire.id}) }}">
+                <button class="btn btn-primary my-2 float-right" type="button">
+                Ajouter un produit
+                </button>
+            </a>
+            
+        </div>
+    </div>
+    <div class="container-fluid my-5 p-3 ">
+    <table id="tab" class="table table-bordered ">
+            <thead>
+                <tr>
+                <th class="col-2"></th>
+                    <th class="col-8"><h1>{{ inventaire.libelle|upper }} </h1></th>
+                <th class="col-2"></th>
+                </tr>
+                <tr>
+                    <th class="col-2">Ref</th>
+                    <th class="col-4">Produit</th>
+                    <th class="col-2">Couleur</th>
+                    <th class="col-1">Qte</th>
+                    <th class="col-1">Comptage</th>
+                    <th class="col-1"></th>
+                </tr>
+            </thead>
+             <tbody>
+             {% set couleur = '' %}
+             {% for prod in inventaire.inventaireLists %}
+             {% if prod.product.qte != prod.comptage %}
+                {% set couleur = 'bg-warning' %}
+             {% endif %}
+             
+                <tr class="{{couleur}}">
+                    <td>{{prod.product.ref}}</td>
+                    <td>{{prod.product.libelle|replace({ 'à':'a', 'â':'a', 'ä':'a', 'é':'e', 'è':'e', 'ê':'e', 'ë':'e', 'ï':'i', 'î':'i', 'ô':'o', 'ö':'o', 'ù':'u', 'û':'u', 'ü':'u', 'ÿ':'y', 'ç':'c' })|upper}}</td>
+                    <td>{{prod.product.color|replace({ 'à':'a', 'â':'a', 'ä':'a', 'é':'e', 'è':'e', 'ê':'e', 'ë':'e', 'ï':'i', 'î':'i', 'ô':'o', 'ö':'o', 'ù':'u', 'û':'u', 'ü':'u', 'ÿ':'y', 'ç':'c' })|upper}}</td>
+                    <td>{{prod.product.qte}}</td>
+                    <td>{{prod.comptage}}</td>
+                    <td>
+                        <a href="{{ path('removeProductInList',{'id': inventaire.id,'ide': prod.id}) }}"
+                            onclick="return confirm ('voulez vous vraiment supprimer le produit ? ')">
+                                <button class="btn pr-0 btnmdsup delete"><i class="far fa-trash-alt"></i></button>
+                        </a>
+                    </td>
+                </tr>
+             {% endfor %}
+            </tbody>
+            <tfoot>
+            </tfoot>
+            </table>
+            <button class="btn btn-success" onclick="exportTableToExcel('tab', 'inventaire')">Exporter tableau en Excel</button>
+  </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        function exportTableToExcel(tableID, filename = ''){
+    var downloadLink;
+    var dataType = 'application/vnd.ms-excel; charset=UTF-8';
+    var tableSelect = document.getElementById(tableID);
+    var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
+    
+    // Specify file name
+    filename = filename?filename+'.xls':'excel_data.xls';
+    
+    // Create download link element
+    downloadLink = document.createElement("a");
+    
+    document.body.appendChild(downloadLink);
+    
+    if(navigator.msSaveOrOpenBlob){
+        var blob = new Blob(['\ufeff', tableHTML], {
+            type: dataType
+        });
+        navigator.msSaveOrOpenBlob( blob, filename);
+    }else{
+        // Create a link to the file
+        downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+    
+        // Setting the file name
+        downloadLink.download = filename;
+        
+        //triggering the function
+        downloadLink.click();
+    }
+}
+    </script>
+{% endblock %}
+

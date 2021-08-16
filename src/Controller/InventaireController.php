@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Inventaire;
+use App\Entity\InventaireList;
 use App\Form\InventaireType;
 use App\Form\NameSearchType;
+use App\Repository\InventaireListRepository;
+use App\Repository\ProductRepository;
 use App\Repository\InventaireRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -100,5 +103,85 @@ class InventaireController extends AbstractController
         $manager->remove($removeInventaire); 
         $manager->flush();
         return $this-> redirectToRoute('inventaire');
+    }
+
+
+
+    /**
+     * permet de voir la liste d'un inventaire
+     * @Route("/inventaire/{id}", name="inInventaire")
+     * @IsGranted("ROLE_USER")
+     * @return Response
+     */
+    public function InInventaire($id,InventaireRepository $inventaireRepo)
+    {
+        $inventaire= $inventaireRepo->findOneById($id);
+        return $this->render('inventaire/inventaire.html.twig', [
+            'inventaire' => $inventaire,
+        ]);
+    }
+
+    /**
+     * permet d'acceder au scanner
+     * @Route("/inventaire/{id}/scanner", name="scan")
+     * @IsGranted("ROLE_USER")
+     * @return Response
+     */
+    public function scanner($id)
+    {
+        
+        return $this->render('mouvement_stock/scanner.html.twig', [
+            
+            'mouvement' => 'Ajouter un produit',
+            'route' => 'inInventaire',
+            'id'=> $id
+        ]);
+    }
+
+    /**
+     * permet d'ajouter dans un inventaire
+     * @Route("/inventaire/{id}/scanner/{ref}/{qte}", name="addInInventaire")
+     * @IsGranted("ROLE_USER")
+     * @return Response
+     */
+    public function addInInventaire(Inventaire $id,$ref,$qte,ProductRepository $productRepo,InventaireListRepository $invListRepo)
+    {
+        $produit= $productRepo->findOneByRef($ref);
+        
+        $invlist = $invListRepo->findAll();
+        $result=0;
+        foreach($invlist as $inv){
+            if($inv->getProduct()->getId() == $produit->getId()){
+                $result=$produit->getId();
+            }
+        }
+        if($result == $produit->getId()){
+            $ligne= $invListRepo->findOneByProduct($result);
+            $ligne->setComptage($ligne->getComptage()+$qte);
+        }else{
+            $ligne= new InventaireList();
+            $ligne->setInventaire($id);
+            $ligne->setProduct($produit);
+            $ligne->setComptage($qte);
+        }
+        $manager=$this->getDoctrine()->getManager();
+        $manager->persist($ligne); 
+        $manager->flush();
+        return $this->json(['code'=> 200, 'message'=>'ok','data'=>true],200);
+    }
+
+    /**
+     * @Route("/inventaire/{id}/supprimer-produit/{ide} ", name="removeProductInList")
+     * @return Response
+     */
+    public function removeProduct($id,$ide,InventaireListRepository $invListRepo)
+    {   
+        $removeProduct = $invListRepo->findOneById($ide);
+        $manager=$this->getDoctrine()->getManager();
+        $manager->remove($removeProduct); 
+        $manager->flush();
+        return $this->redirectToRoute('inInventaire', [
+            'id' => $id
+        ]);
     }
 }

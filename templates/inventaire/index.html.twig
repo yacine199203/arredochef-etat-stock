@@ -33,7 +33,7 @@
     {% for inventaire in inventaires %}
     <div class="row mx-2 py-2 border-bottom">
         <div class="col-10 align-self-center">
-        <a href="#">
+        <a href="{{path('inInventaire',{'id': inventaire.id})}}">
             <span class="">{{inventaire.libelle}}</span>
         </a>
         </div>

@@ -25,20 +25,20 @@ class InventaireList
      */
     private $inventaire;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Product::class, inversedBy="inventaireLists")
-     */
-    private $product;
+    
 
     /**
      * @ORM\Column(type="integer")
      */
     private $comptage;
 
-    public function __construct()
-    {
-        $this->product = new ArrayCollection();
-    }
+    /**
+     * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="inventaireLists")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $product;
+
+   
 
     public function getId(): ?int
     {
@@ -57,30 +57,6 @@ class InventaireList
         return $this;
     }
 
-    /**
-     * @return Collection|Product[]
-     */
-    public function getProduct(): Collection
-    {
-        return $this->product;
-    }
-
-    public function addProduct(Product $product): self
-    {
-        if (!$this->product->contains($product)) {
-            $this->product[] = $product;
-        }
-
-        return $this;
-    }
-
-    public function removeProduct(Product $product): self
-    {
-        $this->product->removeElement($product);
-
-        return $this;
-    }
-
     public function getComptage(): ?int
     {
         return $this->comptage;
@@ -89,6 +65,18 @@ class InventaireList
     public function setComptage(int $comptage): self
     {
         $this->comptage = $comptage;
+
+        return $this;
+    }
+
+    public function getProduct(): ?Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(?Product $product): self
+    {
+        $this->product = $product;
 
         return $this;
     }

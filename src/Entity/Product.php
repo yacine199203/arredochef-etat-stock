@@ -71,7 +71,7 @@ class Product
     private $slug;
 
     /**
-     * @ORM\ManyToMany(targetEntity=InventaireList::class, mappedBy="product")
+     * @ORM\OneToMany(targetEntity=InventaireList::class, mappedBy="product")
      */
     private $inventaireLists;
 
@@ -193,7 +193,7 @@ class Product
     {
         if (!$this->inventaireLists->contains($inventaireList)) {
             $this->inventaireLists[] = $inventaireList;
-            $inventaireList->addProduct($this);
+            $inventaireList->setProduct($this);
         }
 
         return $this;
@@ -202,9 +202,14 @@ class Product
     public function removeInventaireList(InventaireList $inventaireList): self
     {
         if ($this->inventaireLists->removeElement($inventaireList)) {
-            $inventaireList->removeProduct($this);
+            // set the owning side to null (unless already changed)
+            if ($inventaireList->getProduct() === $this) {
+                $inventaireList->setProduct(null);
+            }
         }
 
         return $this;
     }
+
+    
 }
