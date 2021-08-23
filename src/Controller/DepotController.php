@@ -133,7 +133,7 @@ class DepotController extends AbstractController
             $manager=$this->getDoctrine()->getConnection();
             $sql = '
             SELECT * FROM product p, category c
-            WHERE p.category_id = c.id AND p.libelle LIKE \'%'.$name.'%\''.' ORDER BY p.id DESC';
+            WHERE p.category_id = c.id AND p.libelle OR p.color LIKE \'%'.$name.'%\''.' ORDER BY p.id DESC';
             $result=$manager->prepare($sql);
             $produit=$result->executeQuery();
 

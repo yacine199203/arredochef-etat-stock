@@ -45,7 +45,7 @@ class ProductController extends AbstractController
             $manager=$this->getDoctrine()->getConnection();
             $sql = '
             SELECT * FROM product p
-            WHERE p.libelle LIKE \'%'.$name.'%\''.' ORDER BY p.id DESC';
+            WHERE p.libelle OR p.color LIKE \'%'.$name.'%\''.' ORDER BY p.id DESC';
             $result=$manager->prepare($sql);
             $products=$result->executeQuery();
 
