@@ -21,14 +21,14 @@
             </a>
         </div>
         <div class="row justify-content-end mx-2 my-3">
-            <div class="col-2 py-3 px-2">
+            <div class="col-md-2 py-3 px-2">
                 {{ form_start(form) }}
                     <div class="d-lg-flex">
                         <div class="w-100">{{ form_widget(form.word) }}</div>
                     </div>
                 {{ form_end(form) }}
             </div>
-            <div class="col-10 py-3 px-2">
+            <div class="col-md-10 py-3 px-2">
                 {{ form_start(formName) }}
                     <div class="d-lg-flex">
                         <div class="w-100">{{ form_widget(formName.word) }}</div>
@@ -54,7 +54,7 @@
             <span class="">{{product.ref}}</span>
         </div>
         <div class="col-8 align-self-center">
-            <span class="">{{product.libelle}}</span>
+            <span class="">{{product.libelle}} {{' - '}}{{product.color}}</span>
         </div>
 
         <div class="col-2 align-self-center">
