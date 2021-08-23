@@ -122,7 +122,7 @@ class DepotController extends AbstractController
             $name = $form->get('word')->getData();
             $manager=$this->getDoctrine()->getConnection();
             $sql = '
-            SELECT * FROM product p, category c
+            SELECT DISTINCT * FROM product p, category c
             WHERE p.category_id = c.id AND p.ref LIKE \'%'.$name.'%\''.' ORDER BY p.id DESC';
             $result=$manager->prepare($sql);
             $produit=$result->executeQuery();
@@ -132,7 +132,7 @@ class DepotController extends AbstractController
             $name = $formName->get('word')->getData();
             $manager=$this->getDoctrine()->getConnection();
             $sql = '
-            SELECT * FROM product p, category c
+            SELECT DISTINCT  ref ,category_id, libelle, color,qte,alert FROM product p, category c
             WHERE p.category_id = c.id AND p.libelle OR p.color LIKE \'%'.$name.'%\''.' ORDER BY p.id DESC';
             $result=$manager->prepare($sql);
             $produit=$result->executeQuery();
