@@ -87,7 +87,7 @@
                 <h5 class="m-0">Qté</h5>
             </div>
         </div>
-        {% for product in category.products %}
+        {% for product in category.products|sort %}
         {% if product.qte == 0 %}
             {% set txtcouleur = "text-white" %}
             {% set bgcouleur = "bg-danger" %}
